@@ -1,10 +1,10 @@
 {
-  "name": "@zcorky/koa-validate",
+  "name": "@koex/validate",
   "version": "0.0.1",
-  "description": "validate for koa",
+  "description": "validate for koa extend",
   "main": "lib/index.js",
   "module": "lib/index.js",
-  "repository": "https://github.com/zcorky/koa-validate",
+  "repository": "https://github.com/koexjs/validate",
   "author": "Zero",
   "license": "MIT",
   "scripts": {
@@ -19,8 +19,9 @@
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.9.4",
     "@zcorky/koa-onerror": "^0.0.1",
-    "@zcorky/koa-router": "^0.0.4",
+    "@koex/router": "^0.0.1",
     "coveralls": "^3.0.2",
+    "husky": "^1.2.0",
     "koa": "^2.6.2",
     "koa-body": "^4.0.4",
     "mocha": "^5.2.0",
@@ -38,6 +39,11 @@
   "files": [
     "lib/"
   ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
+  },
   "nyc": {
     "check-coverage": true,
     "lines": 60,

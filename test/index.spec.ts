@@ -1,7 +1,7 @@
 import * as Koa from 'koa';
 import * as bodyParser from 'koa-body';
 import onerror from '@zcorky/koa-onerror';
-import * as router from '@zcorky/koa-router';
+import * as router from '@koex/router';
 import * as request from 'supertest';
 import 'should';
 

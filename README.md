@@ -1,18 +1,18 @@
-# koa-validate
+# validate
 
-[![NPM version](https://img.shields.io/npm/v/@zcorky/koa-validate.svg?style=flat)](https://www.npmjs.com/package/@zcorky/koa-validate)
-[![Coverage Status](https://img.shields.io/coveralls/zcorky/koa-validate.svg?style=flat)](https://coveralls.io/r/zcorky/koa-validate)
-[![Dependencies](https://david-dm.org/@zcorky/koa-validate/status.svg)](https://david-dm.org/@zcorky/koa-validate)
-[![Build Status](https://travis-ci.com/zcorky/koa-validate.svg?branch=master)](https://travis-ci.com/zcorky/koa-validate)
-![license](https://img.shields.io/github/license/zcorky/koa-validate.svg)
-[![issues](https://img.shields.io/github/issues/zcorky/koa-validate.svg)](https://github.com/zcorky/koa-validate/issues)
+[![NPM version](https://img.shields.io/npm/v/@koex/validate.svg?style=flat)](https://www.npmjs.com/package/@koex/validate)
+[![Coverage Status](https://img.shields.io/coveralls/koexjs/validate.svg?style=flat)](https://coveralls.io/r/koexjs/validate)
+[![Dependencies](https://img.shields.io/david/koexjs/validate.svg)](https://github.com/koexjs/validate)
+[![Build Status](https://travis-ci.com/koexjs/validate.svg?branch=master)](https://travis-ci.com/koexjs/validate)
+![license](https://img.shields.io/github/license/koexjs/validate.svg)
+[![issues](https://img.shields.io/github/issues/koexjs/validate.svg)](https://github.com/koexjs/validate/issues)
 
-> response time header for Koa.
+> validate for koa extend.
 
 ### Install
 
 ```
-$ npm install @zcorky/koa-validate
+$ npm install @koex/validate
 ```
 
 ### Usage
@@ -21,8 +21,8 @@ $ npm install @zcorky/koa-validate
 // See more in test
 import * as bodyParser from 'koa-body';
 import onerror from '@zcorky/onerror';
-import validate from '@zcorky/koa-validate';
-import * as router from '@zcorky/koa-router';
+import validate from '@koex/validate';
+import * as router from '@koex/router';
 
 import * as Koa from 'koa';
 const app = new Koa();
