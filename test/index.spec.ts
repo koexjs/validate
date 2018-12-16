@@ -18,7 +18,7 @@ describe('koa validate', () => {
     app.use(validate());
 
     app.use(router.post('/', async (ctx, next) => {
-      ctx.validate({
+      await ctx.validate({
         name: 'string',
         age: 'int',
       });
@@ -31,7 +31,7 @@ describe('koa validate', () => {
     return request(app.listen())
       .post('/')
       .send({ name: 'name', age: 22 })
-      .expect(422);
+      .expect(200);
   });
 
   it('should 422', () => {
@@ -44,7 +44,7 @@ describe('koa validate', () => {
     app.use(validate());
 
     app.use(router.post('/', async (ctx, next) => {
-      ctx.validate({
+      await ctx.validate({
         name: 'string',
         age: 'int',
       });
@@ -58,5 +58,34 @@ describe('koa validate', () => {
       .post('/')
       .send({ name: 'name', age: '22' })
       .expect(422, { message: 'Validation Failed' });
+  });
+
+  it('return body', () => {
+    const app = new Koa();
+    app.use(onerror({
+      log: () => null,
+    }));
+    app.use(bodyParser());
+    app.use(validate());
+
+    app.use(router.post('/', async (ctx) => {
+      const { name, age } = await ctx.validate<any, {
+        name: string;
+        age: number;
+      }>({
+        name: 'string',
+        age: 'int',
+      });
+
+      ctx.body = {
+        name,
+        age,
+      };
+    }));
+
+    return request(app.listen())
+      .post('/')
+      .send({ name: 'name', age: 22 })
+      .expect(200, { name: 'name', age: 22 });
   });
 });

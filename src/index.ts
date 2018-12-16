@@ -23,7 +23,7 @@ declare module 'koa' {
      * 
      *  validate(rules, data);
      */
-    validate: <R, D>(rules: R, data?: D) => void;
+    validate: <R, D>(rules: R, data?: D) => Promise<D>;
   }
 }
 
@@ -57,16 +57,24 @@ export interface Options {
 export default (options?: Options): Middleware => {
   const validator = new Parameter(options);
 
-  return async function koaEjs(ctx: Context, next: () => Promise<void>) {
-    if (!ctx.validate) {
-      ctx.validate = (rules, data) => {
-        const _data = data || (ctx.request as any).body;
-        const errors = validator.validate(rules, _data);
+  const validateFn = async <R, D>(ctx: Context, rules: R, data?: D) => {
+    const _data: D = data || (ctx.request as any).body;
+    const errors = validator.validate(rules, _data);
 
-        ctx.throw(422, 'Validation Failed', {
-          code: 'invalid_param',
-          errors,
-        });
+    if (errors) {
+      ctx.throw(422, 'Validation Failed', {
+        code: 'invalid_param',
+        errors,
+      });  
+    }
+
+    return _data;
+  };
+
+  return async function validate(ctx: Context, next: () => Promise<void>) {
+    if (!ctx.validate) {
+      ctx.validate = async <R, D>(rules: R, data?: D) => {
+        return validateFn(ctx, rules, data);
       };
     }
 
