@@ -5,25 +5,25 @@ declare module 'koa' {
   export interface Context {
     /**
      * validate the value conforms to rule. throw 422, 'Validation Failed', { code: 'invalid_param', errors }.
-     * @param rules validate rules
+     * @param schema validate schema
      * @param data validate data
-     * 
+     *
      * example:
-     *  const rules = {
+     *  const schema = {
      *    name: 'foo',
      *    age: 24,
      *    gender: 'male',
      *  };
-     * 
+     *
      *  const data = {
      *    name: 'string',
      *    age: 'int',
      *    gender: ['male', 'female', 'unknown'],
      *  };
-     * 
-     *  validate(rules, data);
+     *
+     *  validate(schema, data);
      */
-    validate: <R, D>(rules: R, data?: D) => Promise<D>;
+    validate: <R, D>(schema: R, data?: D) => Promise<D>;
   }
 }
 
@@ -32,7 +32,7 @@ export interface Options {
    * translate function.
    */
   translate?: (message: string, ...params: any[]) => string;
-  
+
   /**
    * config whether to validate the passed in value must be object, default to `false`.
    */
@@ -52,20 +52,20 @@ export interface Options {
 }
 
 /**
- * Add X-Response-Time header field.
+ * validate
  */
 export default (options?: Options): Middleware => {
   const validator = new Parameter(options);
 
-  const validateFn = async <R, D>(ctx: Context, rules: R, data?: D) => {
+  const validateFn = async <R, D>(ctx: Context, schema: R, data?: D) => {
     const _data: D = data || (ctx.request as any).body;
-    const errors = validator.validate(rules, _data);
+    const errors = validator.validate(schema, _data);
 
     if (errors) {
       ctx.throw(422, 'Validation Failed', {
         code: 'invalid_param',
         errors,
-      });  
+      });
     }
 
     return _data;
@@ -73,8 +73,8 @@ export default (options?: Options): Middleware => {
 
   return async function validate(ctx: Context, next: () => Promise<void>) {
     if (!ctx.validate) {
-      ctx.validate = async <R, D>(rules: R, data?: D) => {
-        return validateFn(ctx, rules, data);
+      ctx.validate = async <R, D>(schema: R, data?: D) => {
+        return validateFn(ctx, schema, data);
       };
     }
 
